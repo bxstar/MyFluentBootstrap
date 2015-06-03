@@ -2,57 +2,54 @@
 @{
     //Layout = null;
     ViewBag.Title = "Index";
+    
+    //Bootstrap的Razor语法注意
+    //1.using可以用来输出html语义元素的包含，或者是逻辑语句的包含，但是using在嵌套时只能在最外层加@
+    //2.@表示需要输出的内容
 }
-
-<h2>Index</h2>
 
 @using (Html.Bootstrap().Container().Begin())
 {
-    @Html.Bootstrap().Heading1("States")
-    using (Html.Bootstrap().Div().SetId("test-states").Begin())
+    using (Html.Bootstrap().Footer().Begin())
     {
-        @Html.Bootstrap().Alert(AlertState.Success, "Success")
-        @Html.Bootstrap().Alert(AlertState.Info, "Info")
-        @Html.Bootstrap().Alert(AlertState.Warning, "Warning")
-        @Html.Bootstrap().Alert(AlertState.Danger, "Danger")
-    }
-
-    <hr />
-
-    @Html.Bootstrap().Heading1("Heading")
-    using (Html.Bootstrap().Div().SetId("test-heading").Begin())
-    {
-        @Html.Bootstrap().Alert(AlertState.Warning, "Warning", "Yikes, this is a warning.")
-    }
-
-    <hr />
-
-    @Html.Bootstrap().Heading1("Dismissible")
-    using (Html.Bootstrap().Div().SetId("test-dismissible").Begin())
-    {
-        @Html.Bootstrap().Alert(AlertState.Warning, "Yikes, this is a warning.").SetDismissible()
-    }
-
-    <hr />
-
-    @Html.Bootstrap().Heading1("Dismissible With Heading")
-    using (Html.Bootstrap().Div().SetId("test-dismissible-with-heading").Begin())
-    {
-        @Html.Bootstrap().Alert(AlertState.Warning, "Warning", "Yikes, this is a warning.").SetDismissible()
-    }
-
-    <hr />
-
-    @Html.Bootstrap().Heading1("Links")
-    using (Html.Bootstrap().Div().SetId("test-links").Begin())
-    {
-        using (Html.Bootstrap().Alert(AlertState.Warning).SetHeading("Yikes!").Begin())
+        var p = Html.Bootstrap().Paragraph();
+        p.SetPullRight();
+        using (p.Begin())
         {
-            <text>This is @Html.Bootstrap().Link("link") inside the alert.</text>
+            @Html.Bootstrap().Link("回到顶部", "#top").AddAttribute("data-toggle","modal").AddAttribute("data-target","#about");
+        }
+
+        @Html.Bootstrap().Paragraph().SetText("@ 2014 慕课网");
+    }
+
+}
+
+@using (Html.Bootstrap().Div().AddCss("modal", "fade").SetId("about").Begin())
+{
+    using (Html.Bootstrap().Div().AddCss("modal-dialog").Begin())
+    {
+        using (Html.Bootstrap().Div().AddCss("modal-content").Begin())
+        {
+            using (Html.Bootstrap().Div().AddCss("modal-header").Begin())
+            {
+                using (Html.Bootstrap().Button().RemoveCss("btn", "btn-default").AddCss("close").AddAttribute("data-dismiss", "modal").Begin())
+                { 
+                    @Html.Bootstrap().Span().AddAttribute("aria-hidden", "true").SetText("&times;");
+                    @Html.Bootstrap().Span().AddCss("sr-only").SetText("Close");
+                }
+                @Html.Bootstrap().Heading4().AddCss("modal-title").SetText("关于");
+            }
+
+            using (Html.Bootstrap().Div().AddCss("modal-body").Begin())
+            {
+                @Html.Bootstrap().Paragraph().SetText("慕课网是一家在线教育公司");
+            }
+
+            using (Html.Bootstrap().Div().AddCss("modal-footer").Begin())
+            {
+                @Html.Bootstrap().Button().AddAttribute("data-dismiss", "modal").SetText("Close");
+                @Html.Bootstrap().Button().RemoveCss("btn-default").AddCss("btn-primary").SetText("Save changes");
+            }
         }
     }
-
-    @Html.Bootstrap().Alert(AlertState.Warning, "Warning", "yrs, 警告.")
-    
-    @Html.Bootstrap().NavbarButton("aaa")
 }

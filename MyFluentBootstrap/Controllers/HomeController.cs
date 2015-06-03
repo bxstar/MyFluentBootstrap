@@ -16,5 +16,9 @@ namespace MyFluentBootstrap.Controllers
             return View();
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }
