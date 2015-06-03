@@ -16,6 +16,10 @@ namespace MyFluentBootstrap.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 现代浏览器的demo视图
+        /// </summary>
+        /// <returns></returns>
         public ActionResult About()
         {
             return View();
