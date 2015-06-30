@@ -42,17 +42,17 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentBootstrap, Version=3.3.4.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentBootstrap.3.3.4.3\lib\net40\FluentBootstrap.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FluentBootstrap, Version=3.3.4.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentBootstrap.3.3.4.4\lib\net40\FluentBootstrap.dll</HintPath>
     </Reference>
-    <Reference Include="FluentBootstrap.Mvc, Version=3.3.4.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentBootstrap.Mvc.3.3.4.3\lib\net40\FluentBootstrap.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FluentBootstrap.Mvc, Version=3.3.4.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentBootstrap.Mvc.3.3.4.4\lib\net40\FluentBootstrap.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.0\lib\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
