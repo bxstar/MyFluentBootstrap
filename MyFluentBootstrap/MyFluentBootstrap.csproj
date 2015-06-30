@@ -129,6 +129,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\ActionLinkExtensions.cs" />
+    <Compile Include="Extensions\CheckBoxListExtensions.cs" />
+    <Compile Include="Extensions\Enums.cs" />
+    <Compile Include="Extensions\RadioBoxListExtensions.cs" />
+    <Compile Include="Extensions\SpanExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -160,6 +165,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="images\logo.psd" />
+    <Content Include="App_Code\HtmlHelper.cshtml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />

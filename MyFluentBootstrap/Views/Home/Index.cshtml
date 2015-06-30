@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     //Layout = null;
     ViewBag.Title = "Index";
     
@@ -7,6 +6,22 @@
     //1.using可以用来输出html语义元素的包含，或者是逻辑语句的包含，但是using在嵌套时只能在最外层加@
     //2.@表示需要输出的内容
 }
+
+
+
+@Html.ActionLink("浏览器页","About")
+<br />
+@HtmlHelper.ActionLinkWithTarget("浏览器页", "/Home/About", TargetType._top)
+@HtmlHelper.ActionLinkWithTarget("浏览器页", "/Home/About", TargetType._blank)
+
+<br />
+@Html.ActionLink("浏览器页", "/Home/About", TargetType._self)
+@Html.ActionLink("浏览器页", "/Home/About", TargetType._blank)
+
+<br />
+@Html.Span("s1","span1")
+@Html.Span("s2", "span2", "btn btn-default", "font-size: 15px;")
+
 
 @using (Html.Bootstrap().Container().Begin())
 {
@@ -53,5 +68,3 @@
         }
     }
 }
-
-@*@Html.ActionLink("linkText","actionName") //*@
