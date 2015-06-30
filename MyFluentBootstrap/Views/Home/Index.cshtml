@@ -19,7 +19,7 @@
             @Html.Bootstrap().Link("回到顶部", "#top").AddAttribute("data-toggle","modal").AddAttribute("data-target","#about");
         }
 
-        @Html.Bootstrap().Paragraph().SetText("@ 2014 慕课网");
+        @Html.Bootstrap().Paragraph().SetText("@ 2015 携程旅行网");
     }
 
 }
@@ -42,7 +42,7 @@
 
             using (Html.Bootstrap().Div().AddCss("modal-body").Begin())
             {
-                @Html.Bootstrap().Paragraph().SetText("慕课网是一家在线教育公司");
+                @Html.Bootstrap().Paragraph().SetText("携程旅行网是一家在线旅游公司");
             }
 
             using (Html.Bootstrap().Div().AddCss("modal-footer").Begin())
@@ -53,3 +53,5 @@
         }
     }
 }
+
+@*@Html.ActionLink("linkText","actionName") //*@
