@@ -19,6 +19,7 @@
 <br />
 @Html.ActionLink("浏览器页", "/Home/About", TargetType._self)
 @Html.ActionLink("浏览器页", "About", TargetType._blank)
+@Html.ActionLink("aaa","http://www.ctrip.com",TargetType._blank)
 @Html.ActionLink("百度", "http://www.baidu.com", TargetType._blank)
 @Html.ActionLinkWithImage(Url.Content("https://www.baidu.com/img/bdlogo.png"), "http://www.baidu.com")
 <br />
@@ -31,6 +32,12 @@
 
 @Html.Alert("Title").Danger().Dismissible()
 @Html.Alert("Title Without Close")
+
+@using (Html.Panel("Title", PanelStyle.Success))
+{
+    <p>这是自动闭合的Helpers</p>
+    <p>panel..</p>
+}
 
 
 @using (Html.Bootstrap().Container().Begin())

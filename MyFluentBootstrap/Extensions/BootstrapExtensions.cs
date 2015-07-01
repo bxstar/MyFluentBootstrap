@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -43,7 +44,7 @@ namespace System.Web.Mvc
 
 
     #region 链式写法实现
-    public class CtripFluentDiv : IFluent
+    public class CtripFluentDiv : IHtmlString
     {
         private string _userName;
         private string _message;
@@ -52,16 +53,10 @@ namespace System.Web.Mvc
         {
             _message = message;
         }
-        public IFluent SetUserName(string userName)
+        public IHtmlString SetUserName(string userName)
         {
             _userName = userName;
             //需要返回实现IHtmlString对象的实例
-            return new Fluent<CtripFluentDiv>(this);
-        }
-
-
-        public IFluent Dismissible(bool canDismiss = true)
-        {
             return new Fluent<CtripFluentDiv>(this);
         }
 
@@ -84,15 +79,40 @@ namespace System.Web.Mvc
     } 
     #endregion
 
-
-    #region 链式复杂写法
-    public interface IAlert : IFluent
+    /// <summary>
+    /// Fluent基类必须实现IHtmlString
+    /// </summary>
+    public class Fluent<T> : IHtmlString where T : IHtmlString
     {
-        IFluent Danger();
-        IFluent Info();
-        IFluent Success();
-        IFluent Warning();
+        private readonly T _parent;
+
+        public Fluent(T parent)
+        {
+            _parent = parent;
+        }
+
+        public string ToHtmlString()
+        {
+            return _parent.ToHtmlString();
+        }
     }
+
+    #region 链式复杂写法，参见 http://www.cnblogs.com/OceanEyes/p/creating-bootstrap-helpers.html， 可改进为泛型
+
+    public interface IAlertFluent : IHtmlString
+    {
+        IAlertFluent Dismissible(bool canDismiss = true);
+    }
+
+    public interface IAlert : IAlertFluent
+    {
+        IAlertFluent Danger();
+        IAlertFluent Info();
+        IAlertFluent Success();
+        IAlertFluent Warning();
+    }
+
+
     public class Alert : IAlert
     {
         private AlertStyle _style;
@@ -104,34 +124,34 @@ namespace System.Web.Mvc
             _message = message;
         }
 
-        public IFluent Danger()
+        public IAlertFluent Danger()
         {
             _style = AlertStyle.Danger;
-            return new Fluent<Alert>(this);
+            return new AlertFluent(this);
         }
 
-        public IFluent Info()
+        public IAlertFluent Info()
         {
             _style = AlertStyle.Info;
-            return new Fluent<Alert>(this);
+            return new AlertFluent(this);
         }
 
-        public IFluent Success()
+        public IAlertFluent Success()
         {
             _style = AlertStyle.Success;
-            return new Fluent<Alert>(this);
+            return new AlertFluent(this);
         }
 
-        public IFluent Warning()
+        public IAlertFluent Warning()
         {
             _style = AlertStyle.Warning;
-            return new Fluent<Alert>(this);
+            return new AlertFluent(this);
         }
 
-        public IFluent Dismissible(bool canDismiss = true)
+        public IAlertFluent Dismissible(bool canDismiss = true)
         {
             this._dismissible = canDismiss;
-            return new Fluent<Alert>(this);
+            return new AlertFluent(this);
         }
 
         public string ToHtmlString()
@@ -160,35 +180,17 @@ namespace System.Web.Mvc
         }
     }
 
-    public static class AlertExtensions
+
+    public class AlertFluent : IAlertFluent
     {
-        public static Alert Alert(this HtmlHelper html, string message)
-        {
-            return new Alert(message);
-        }
-    } 
-    #endregion
+        private readonly Alert _parent;
 
-
-
-    /// <summary>
-    /// 创建Fluent Helpers
-    /// </summary>
-    public interface IFluent : IHtmlString
-    {
-        IFluent Dismissible(bool canDismiss = true);
-    }
-
-    public class Fluent<T> : IFluent where T : IFluent
-    {
-        private readonly T _parent;
-
-        public Fluent(T parent)
+        public AlertFluent(Alert parent)
         {
             _parent = parent;
         }
 
-        public IFluent Dismissible(bool canDismiss = true)
+        public IAlertFluent Dismissible(bool canDismiss = true)
         {
             return _parent.Dismissible(canDismiss);
         }
@@ -196,6 +198,63 @@ namespace System.Web.Mvc
         public string ToHtmlString()
         {
             return _parent.ToHtmlString();
+        }
+    }
+
+    public static class AlertHelper
+    {
+        public static Alert Alert(this HtmlHelper html, string message)
+        {
+            return new Alert(message);
+        }
+    }
+
+
+    #endregion
+
+
+    /// <summary>
+    /// 创建自动闭合的Helpers
+    /// </summary>
+    public class Panel : IDisposable
+    {
+        private readonly TextWriter _writer;
+
+        public Panel(HtmlHelper helper, string title, PanelStyle style = PanelStyle.Default)
+        {
+            _writer = helper.ViewContext.Writer;
+
+            var panelDiv = new TagBuilder("div");
+            panelDiv.AddCssClass("panel-" + style.ToString().ToLower());
+            panelDiv.AddCssClass("panel");
+
+            var panelHeadingDiv = new TagBuilder("div");
+            panelHeadingDiv.AddCssClass("panel-heading");
+
+            var heading3Div = new TagBuilder("h3");
+            heading3Div.AddCssClass("panel-title");
+            heading3Div.SetInnerText(title);
+
+            var panelBodyDiv = new TagBuilder("div");
+            panelBodyDiv.AddCssClass("panel-body");
+
+            panelHeadingDiv.InnerHtml = heading3Div.ToString();
+
+            string html = string.Format("{0}{1}{2}", panelDiv.ToString(TagRenderMode.StartTag), panelHeadingDiv, panelBodyDiv.ToString(TagRenderMode.StartTag));
+            _writer.Write(html);
+        }
+
+        public void Dispose()
+        {
+            _writer.Write("</div></div>");
+        }
+    }
+
+    public static class PanelHelper
+    {
+        public static Panel Panel(this HtmlHelper html, string title, PanelStyle style = PanelStyle.Default)
+        {
+            return new Panel(html, title, style);
         }
     }
 }
