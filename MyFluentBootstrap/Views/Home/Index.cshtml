@@ -1,23 +1,26 @@
 ﻿@{
-    //Layout = null;
+    
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutCtrip.cshtml";
     
     //Bootstrap的Razor语法注意
     //1.using可以用来输出html语义元素的包含，或者是逻辑语句的包含，但是using在嵌套时只能在最外层加@
     //2.@表示需要输出的内容
 }
 
+@Html.CtripHeader("Hello").SetUserName("李三三")
 
-
-@Html.ActionLink("浏览器页","About")
+@Html.ActionLink("浏览器页", "About", null, new { target = "_blank" })
+@Html.ActionLink("百度", "", "", "http", "www.baidu.com", "", null, null)
 <br />
 @HtmlHelper.ActionLinkWithTarget("浏览器页", "/Home/About", TargetType._top)
 @HtmlHelper.ActionLinkWithTarget("浏览器页", "/Home/About", TargetType._blank)
 
 <br />
 @Html.ActionLink("浏览器页", "/Home/About", TargetType._self)
-@Html.ActionLink("浏览器页", "/Home/About", TargetType._blank)
-
+@Html.ActionLink("浏览器页", "About", TargetType._blank)
+@Html.ActionLink("百度", "http://www.baidu.com", TargetType._blank)
+@Html.ActionLinkWithImage(Url.Content("https://www.baidu.com/img/bdlogo.png"), "http://www.baidu.com")
 <br />
 @Html.Span("s1","span1")
 @Html.Span("s2", "span2", "btn btn-default", "font-size: 15px;")
@@ -27,6 +30,8 @@
 @Html.BootstrapButton("提示", ButtonStyle.Info, ButtonSizeStyle.Normal)
 
 @Html.Alert("Title").Danger().Dismissible()
+@Html.Alert("Title Without Close")
+
 
 @using (Html.Bootstrap().Container().Begin())
 {

@@ -42,24 +42,57 @@ namespace System.Web.Mvc
     }
 
 
-    /// <summary>
-    /// 创建Fluent Helpers
-    /// </summary>
-    public interface IAlertFluent : IHtmlString
+    #region 链式写法实现
+    public class CtripFluentDiv : IFluent
     {
-        IAlertFluent Dismissible(bool canDismiss = true);
+        private string _userName;
+        private string _message;
+
+        public CtripFluentDiv(string message)
+        {
+            _message = message;
+        }
+        public IFluent SetUserName(string userName)
+        {
+            _userName = userName;
+            //需要返回实现IHtmlString对象的实例
+            return new Fluent<CtripFluentDiv>(this);
+        }
+
+
+        public IFluent Dismissible(bool canDismiss = true)
+        {
+            return new Fluent<CtripFluentDiv>(this);
+        }
+
+        public string ToHtmlString()
+        {
+            var alertDiv = new TagBuilder("div");
+
+            alertDiv.InnerHtml = _message + "," + _userName;
+
+            return alertDiv.ToString();
+        }
     }
 
-
-    public interface IAlert : IAlertFluent
+    public static class CtripExtensions
     {
-        IAlertFluent Danger();
-        IAlertFluent Info();
-        IAlertFluent Success();
-        IAlertFluent Warning();
+        public static CtripFluentDiv CtripHeader(this HtmlHelper html, string message)
+        {
+            return new CtripFluentDiv(message);
+        }
+    } 
+    #endregion
+
+
+    #region 链式复杂写法
+    public interface IAlert : IFluent
+    {
+        IFluent Danger();
+        IFluent Info();
+        IFluent Success();
+        IFluent Warning();
     }
-
-
     public class Alert : IAlert
     {
         private AlertStyle _style;
@@ -71,34 +104,34 @@ namespace System.Web.Mvc
             _message = message;
         }
 
-        public IAlertFluent Danger()
+        public IFluent Danger()
         {
             _style = AlertStyle.Danger;
-            return new AlertFluent(this);
+            return new Fluent<Alert>(this);
         }
 
-        public IAlertFluent Info()
+        public IFluent Info()
         {
             _style = AlertStyle.Info;
-            return new AlertFluent(this);
+            return new Fluent<Alert>(this);
         }
 
-        public IAlertFluent Success()
+        public IFluent Success()
         {
             _style = AlertStyle.Success;
-            return new AlertFluent(this);
+            return new Fluent<Alert>(this);
         }
 
-        public IAlertFluent Warning()
+        public IFluent Warning()
         {
             _style = AlertStyle.Warning;
-            return new AlertFluent(this);
+            return new Fluent<Alert>(this);
         }
 
-        public IAlertFluent Dismissible(bool canDismiss = true)
+        public IFluent Dismissible(bool canDismiss = true)
         {
             this._dismissible = canDismiss;
-            return new AlertFluent(this);
+            return new Fluent<Alert>(this);
         }
 
         public string ToHtmlString()
@@ -127,17 +160,35 @@ namespace System.Web.Mvc
         }
     }
 
-
-    public class AlertFluent : IAlertFluent
+    public static class AlertExtensions
     {
-        private readonly Alert _parent;
+        public static Alert Alert(this HtmlHelper html, string message)
+        {
+            return new Alert(message);
+        }
+    } 
+    #endregion
 
-        public AlertFluent(Alert parent)
+
+
+    /// <summary>
+    /// 创建Fluent Helpers
+    /// </summary>
+    public interface IFluent : IHtmlString
+    {
+        IFluent Dismissible(bool canDismiss = true);
+    }
+
+    public class Fluent<T> : IFluent where T : IFluent
+    {
+        private readonly T _parent;
+
+        public Fluent(T parent)
         {
             _parent = parent;
         }
 
-        public IAlertFluent Dismissible(bool canDismiss = true)
+        public IFluent Dismissible(bool canDismiss = true)
         {
             return _parent.Dismissible(canDismiss);
         }
@@ -147,13 +198,4 @@ namespace System.Web.Mvc
             return _parent.ToHtmlString();
         }
     }
-
-    public static class AlertHelper
-    {
-        public static Alert Alert(this HtmlHelper html, string message)
-        {
-            return new Alert(message);
-        }
-    }
-
 }
