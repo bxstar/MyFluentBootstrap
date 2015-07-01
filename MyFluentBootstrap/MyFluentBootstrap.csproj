@@ -130,6 +130,7 @@
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\ActionLinkExtensions.cs" />
+    <Compile Include="Extensions\BootstrapExtensions.cs" />
     <Compile Include="Extensions\CheckBoxListExtensions.cs" />
     <Compile Include="Extensions\Enums.cs" />
     <Compile Include="Extensions\RadioBoxListExtensions.cs" />

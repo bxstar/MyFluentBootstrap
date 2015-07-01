@@ -22,6 +22,11 @@
 @Html.Span("s1","span1")
 @Html.Span("s2", "span2", "btn btn-default", "font-size: 15px;")
 
+<br />
+@Html.BootstrapButton("很危险", ButtonStyle.Danger, ButtonSizeStyle.Large)
+@Html.BootstrapButton("提示", ButtonStyle.Info, ButtonSizeStyle.Normal)
+
+@Html.Alert("Title").Danger().Dismissible()
 
 @using (Html.Bootstrap().Container().Begin())
 {

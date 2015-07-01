@@ -27,4 +27,45 @@ namespace System.Web.Mvc
         /// </summary>
         _top
     }
+
+
+    #region Bootstrap 枚举
+    /// <summary>
+    /// Bootstrap按钮风格
+    /// </summary>
+    public enum ButtonStyle
+    {
+        Default,
+        Primary,
+        Success,
+        Info,
+        Waring,
+        Danger,
+        Link
+    }
+    public enum ButtonSizeStyle
+    {
+        Large,
+        Small,
+        ExtraSmall,
+        Normal
+    }
+    public enum AlertStyle
+    {
+        Danger,
+        Info,
+        Success,
+        Warning,
+    }
+
+    public enum PanelStyle
+    {
+        Default,
+        Primary,
+        Success,
+        Info,
+        Warning,
+        Danger
+    } 
+    #endregion
 }
